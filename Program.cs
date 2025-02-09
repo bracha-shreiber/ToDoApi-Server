@@ -6,8 +6,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddDbContext<ToDoDbContext>(options =>
-    options.UseMySql(builder.Configuration.GetConnectionString("REACT_APP_CONNECTION_STRING"), 
-    ServerVersion.Parse("8.0.40-mysql")));
+   options.UseMySql("name=todoapi", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.41-mysql"))
+);
+    
     
 builder.Services.AddCors(options =>
 {
@@ -37,14 +38,14 @@ app.UseSwaggerUI(c =>
     c.RoutePrefix = string.Empty; // Set Swagger UI at the app's root
 });
 
-app.UseCors("AllowAllOrigins");
+
 app.UseSwagger();
 app.UseSwaggerUI();
 app.MapGet("/items", (ToDoDbContext dbContext) => GetTodos(dbContext));
 app.MapPost("/items", (ToDoDbContext dbContext, Item item) => PostTodo(dbContext, item));
 app.MapPut("/items/{id}", (ToDoDbContext dbContext, int id, Item item) => PutTodo(dbContext, id, item));
 app.MapDelete("/items/{id}", (ToDoDbContext dbContext, int id) => DeleteTodo(dbContext, id));
-
+app.UseCors("AllowAllOrigins");
 
 
 List<Item> GetTodos(ToDoDbContext dbContext)
