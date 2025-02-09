@@ -45,26 +45,26 @@ app.MapPost("/items", (ToDoDbContext dbContext, Item item) => PostTodo(dbContext
 app.MapPut("/items/{id}", (ToDoDbContext dbContext, int id, Item item) => PutTodo(dbContext, id, item));
 app.MapDelete("/items/{id}", (ToDoDbContext dbContext, int id) => DeleteTodo(dbContext, id));
 
-app.Run();
+
 
 List<Item> GetTodos(ToDoDbContext dbContext)
 {
-    return dbContext.Items.ToList();
+    return dbContext.items.ToList();
 }
 Item PostTodo(ToDoDbContext dbContext, Item item)
 {
-    dbContext.Items.Add(item);
+    dbContext.items.Add(item);
     dbContext.SaveChanges();
     return item;
 }
 
 Item PutTodo(ToDoDbContext dbContext, int id, Item item)
 {
-    var existingItem = dbContext.Items.Find(id);
+    var existingItem = dbContext.items.Find(id);
     if (existingItem != null)
     {
         existingItem.IsComplete = item.IsComplete;
-        dbContext.Items.Update(existingItem);
+        dbContext.items.Update(existingItem);
         dbContext.SaveChanges();
     }
     return existingItem;
@@ -72,10 +72,12 @@ Item PutTodo(ToDoDbContext dbContext, int id, Item item)
 
 void DeleteTodo(ToDoDbContext dbContext, int id)
 {
-    var item = dbContext.Items.Find(id);
+    var item = dbContext.items.Find(id);
     if (item != null)
     {
-        dbContext.Items.Remove(item);
+        dbContext.items.Remove(item);
         dbContext.SaveChanges();
     }
 }
+app.MapGet("/",()=>"AuthServer API is running");
+app.Run();
