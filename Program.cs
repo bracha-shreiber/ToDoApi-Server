@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddDbContext<ToDoDbContext>(options =>
-    options.UseMySql(builder.Configuration.GetConnectionString("ToDoDB"), 
+    options.UseMySql(builder.Configuration.GetConnectionString("REACT_APP_CONNECTION_STRING"), 
     ServerVersion.Parse("8.0.40-mysql")));
     
 builder.Services.AddCors(options =>
